@@ -26,4 +26,38 @@ class HtmlBuilder extends BaseHtmlBuilder {
 
         $this->config = $config;
     }
+
+    /**
+     * Create translation navigation
+     *
+     * @param  string       $name
+     * @param  array        $attributes
+     * @return string
+     */
+    public function navTranslations($name, $attributes = [], $errors = null)
+    {
+        $locales = $this->config->get('translatable.locales');
+
+        $html = '';
+
+        foreach ($locales as $locale)
+        {
+            $liAttributes['class'] = '';
+            $liAttributes['role'] = 'presentation';
+
+            // Activate the first tab
+            if ($locale === reset($locales))
+            {
+                $liAttributes['class'] = 'active';
+            }
+
+            $li = '<li'.$this->attributes($liAttributes).'>';
+
+            $link = $this->link('#'.$name.$locale, trans('locales.language.' . $locale), ['data-toggle' => 'tab', 'role' => 'tab']);
+
+            $html .= $li.$link.'</li>';
+        }
+
+        return '<ul'.$this->attributes($attributes).'>'.$html.'</ul>';
+    }
 }
