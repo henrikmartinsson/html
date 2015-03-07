@@ -2,6 +2,7 @@
 
 use Illuminate\Contracts\Config\Repository as ConfigRepository;
 use Illuminate\Html\HtmlBuilder as BaseHtmlBuilder;
+use Illuminate\Routing\UrlGenerator;
 
 class HtmlBuilder extends BaseHtmlBuilder {
 
