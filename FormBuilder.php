@@ -38,6 +38,31 @@ class FormBuilder extends BaseFormBuilder {
     }
 
     /**
+     * Create a form label element.
+     *
+     * @param  string  $name
+     * @param  string  $value
+     * @param  array   $options
+     * @return string
+     */
+    public function label($name, $value = null, $options = array())
+    {
+        if (isset($options['language']) and strlen($options['language']) > 0)
+        {
+            $name = $name . '_' . $options['language'];
+
+            unset($options['language']);
+        }
+
+        if($value)
+        {
+            $value = trans($value);
+        }
+
+        return parent::label($name, $value, $options);
+    }
+
+    /**
      * Create a form input help element
      *
      * @param  string       $name

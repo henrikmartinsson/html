@@ -34,7 +34,7 @@ class HtmlBuilder extends BaseHtmlBuilder {
      * @param  array        $attributes
      * @return string
      */
-    public function navTranslations($name, $attributes = [], $errors = null)
+    public function navTranslations($name, $attributes = [])
     {
         $locales = $this->config->get('translatable.locales');
 
@@ -53,11 +53,85 @@ class HtmlBuilder extends BaseHtmlBuilder {
 
             $li = '<li'.$this->attributes($liAttributes).'>';
 
-            $link = $this->link('#'.$name.$locale, trans('locales.language.' . $locale), ['data-toggle' => 'tab', 'role' => 'tab']);
+            $link = $this->link('#' . $name . '_' . $locale, trans('locales.language.' . $locale), ['data-toggle' => 'tab', 'role' => 'tab']);
 
             $html .= $li.$link.'</li>';
         }
 
         return '<ul'.$this->attributes($attributes).'>'.$html.'</ul>';
+    }
+
+    /**
+     * Open form group and set error class.
+     *
+     * @param  boolean $hasError 
+     * @return string
+     */
+    public function openGroup($hasError = false)
+    {
+        $class = 'form-group';
+        
+        if ($hasError)
+        {
+            $class .= ' has-error';
+        }
+
+        $attributes = ['class' => $class];
+
+        return '<div'.$this->attributes($attributes).'>';
+    }
+
+    /**
+     * Close form group
+     * 
+     * @return string
+     */
+    public function closeGroup()
+    {
+        return '</div>';
+    }
+
+    /**
+     * Open a tab pane for a translation.
+     * 
+     * @param  string $name
+     * @param  string $language
+     * @param  array $attributes
+     * @return string
+     */
+    public function openTranslationPane($name, $language, $attributes = [])
+    {
+        $locales = $this->config->get('translatable.locales');
+
+        $attributes['id'] = $name . '_' . $language;
+
+        if (isset($attributes['class']))
+        {
+            $class = explode(' ', $attributes['class']);
+        }
+
+        $class[] = 'tab-pane';
+
+        // Activate the first tab
+        if ($language === reset($locales))
+        {
+            $class[] = 'active';
+        }
+        
+        $attributes['class'] = implode(' ', $class);
+
+        $attributes['role'] = 'tabpanel';
+
+        return '<div'.$this->attributes($attributes).'>';
+    }
+
+    /**
+     * Close a tab pane for a translation.
+     * 
+     * @return string
+     */
+    public function closeTranslationPane()
+    {
+        return '</div>';
     }
 }
