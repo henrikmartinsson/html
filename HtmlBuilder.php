@@ -62,36 +62,6 @@ class HtmlBuilder extends BaseHtmlBuilder {
     }
 
     /**
-     * Open form group and set error class.
-     *
-     * @param  boolean $hasError 
-     * @return string
-     */
-    public function openGroup($hasError = false)
-    {
-        $class = 'form-group';
-        
-        if ($hasError)
-        {
-            $class .= ' has-error';
-        }
-
-        $attributes = ['class' => $class];
-
-        return '<div'.$this->attributes($attributes).'>';
-    }
-
-    /**
-     * Close form group
-     * 
-     * @return string
-     */
-    public function closeGroup()
-    {
-        return '</div>';
-    }
-
-    /**
      * Open a tab pane for a translation.
      * 
      * @param  string $name

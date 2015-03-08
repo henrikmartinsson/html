@@ -163,4 +163,54 @@ class FormBuilder extends BaseFormBuilder {
             $this->translatable = array_key_exists($key, $model);
         }
     }
+
+    /**
+     * Open form group and set error class.
+     *
+     * @param  boolean $hasError 
+     * @return string
+     */
+    public function openGroup($hasError = false)
+    {
+        $class = 'form-group';
+        
+        if ($hasError)
+        {
+            $class .= ' has-error';
+        }
+
+        $attributes = ['class' => $class];
+
+        return '<div'.$this->html->attributes($attributes).'>';
+    }
+
+    /**
+     * Close form group
+     * 
+     * @return string
+     */
+    public function closeGroup()
+    {
+        return '</div>';
+    }
+
+    public function textGroup($name, $label, $errors, $language = null)
+    {
+        if($language)
+        {
+            $name = $name . '_' . $language;
+        }
+
+        $html = $this->openGroup($errors->has($name));
+
+        $html .= $this->label($name, $label);
+
+        $html .= $this->text($name, null, ['class' => 'form-control']);
+
+        $html .= $this->helpInline($name, $errors, true);
+
+        $html .= $this->closeGroup();
+
+        return $html;
+    }
 }
