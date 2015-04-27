@@ -213,4 +213,101 @@ class FormBuilder extends BaseFormBuilder {
 
         return $html;
     }
+
+    /**
+     * Create file upload input with preview of existing file.
+     *
+     * @param  string  $name
+     * @param  array  $options
+     * @return string
+     */
+    public function stapler($name, $image = true, $imgSize = '', $options = [], $url = null)
+    {
+        $thumbnail = null;
+
+        $attachment = $this->stapler_attachment_get($this->transformKey($name));
+
+        if(is_null($attachment)) {
+            $thumbnail = null;
+        }
+
+        else if ($image and ! is_null($attachment->originalFileName())) {
+            $thumbnail = $this->html->image($attachment->url($imgSize), $name, ['class' => 'thumbnail img-responsive', 'style' => 'max-height: 180px;']);
+        }
+
+        else if (! $image and ! is_null($attachment->originalFileName())) {
+            $thumbnail = $this->html->link($attachment->url());
+        }
+
+        $html = 
+        '<div class="fileupload fileupload-new" data-provides="fileupload">
+            <div class="input-append">
+                <div class="uneditable-input">
+                    <i class="glyphicon glyphicon-file fileupload-exists"></i>
+                    <span class="fileupload-preview"></span>
+                </div>
+                <span class="btn btn-default btn-file">
+                    <span class="fileupload-new">'.trans('admin::files.choose_file').'</span>
+                    <span class="fileupload-exists">'.trans('admin::files.change').'</span>';
+
+        $html .= $this->file($name, $options);
+
+        $html .= 
+                '</span>
+                    <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">'.trans('admin::files.remove').'</a>
+            </div>
+        </div>';
+
+        /*
+          Set checkbox name to the actual attribute name, even if its in a related model.
+          The stapler remove method expect it like that.
+        */
+        $cbNameArr = explode('.', $this->transformKey($name));
+        $cbName = end($cbNameArr);
+        
+        $remove = 
+            '<div class="checkbox block">
+                <label>'.$this->checkbox('delete_'.$cbName).trans('admin::files.remove').'</label>
+            </div>';
+
+        return (is_null($thumbnail)) ? $html : $thumbnail.$remove.$html;
+    }
+
+    /**
+     * Get stapler attachment from an object using "dot" notation.
+     * Almost the same as object_get, but must work a bit different.
+     *
+     * @param  object  $object
+     * @param  string  $key
+     * @param  mixed   $default
+     * @return mixed
+     */
+    protected function stapler_attachment_get($key, $default = null)
+    {
+        $attachment = $this->model;
+
+        // Find attachment
+        foreach (explode('.', $key) as $segment)
+        {
+            $attachment = $attachment->{$segment};
+        }
+
+        // Finally check if there is an attachment on the translatable model.
+        if (is_null($attachment) and $this->translatable)
+        {
+            $translations = \Config::get('app.locales');
+
+            foreach($translations as $translation)
+            {
+                if(ends_with($segment, '_'.$translation))
+                {
+                    $name = substr($segment, 0, -strlen('_'.$translation));
+
+                    $attachment = $this->model->translate($translation)->{$name};
+                }
+            }
+        }
+
+        return ($attachment) ?: $default;
+    }
 }
