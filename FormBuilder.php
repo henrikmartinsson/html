@@ -295,7 +295,7 @@ class FormBuilder extends BaseFormBuilder {
         // Finally check if there is an attachment on the translatable model.
         if (is_null($attachment) and $this->translatable)
         {
-            $translations = \Config::get('app.locales');
+            $translations = \Config::get('translatable.locales');
 
             foreach($translations as $translation)
             {
