@@ -246,7 +246,7 @@ class FormBuilder extends BaseFormBuilder {
 
         $html .= $this->file($name, $options);
 
-        $html .= '<a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">'.trans('admin::files.remove').'</a></div>';
+        $html .= '</span><a href="#" class="input-group-addon btn btn-default fileinput-exists" data-dismiss="fileinput">'.trans('admin::files.remove').'</a></div>';
 
         /*
           Set checkbox name to the actual attribute name, even if its in a related model.
