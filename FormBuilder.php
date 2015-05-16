@@ -239,24 +239,16 @@ class FormBuilder extends BaseFormBuilder {
             $thumbnail = $this->html->link($attachment->url());
         }
 
-        $html = 
-        '<div class="fileupload fileupload-new" data-provides="fileupload">
-            <div class="input-append">
-                <div class="uneditable-input">
-                    <i class="glyphicon glyphicon-file fileupload-exists"></i>
-                    <span class="fileupload-preview"></span>
-                </div>
-                <span class="btn btn-default btn-file">
-                    <span class="fileupload-new">'.trans('admin::files.choose_file').'</span>
-                    <span class="fileupload-exists">'.trans('admin::files.change').'</span>';
+        $html = '<div class="fileinput fileinput-new" data-provides="fileinput">';
+
+        $html .= '<div>
+            <span class="btn btn-default btn-file">
+            <span class="fileinput-new">'.trans('admin::files.choose_file').'</span>
+            <span class="fileinput-exists">'.trans('admin::files.change').'</span>';
 
         $html .= $this->file($name, $options);
 
-        $html .= 
-                '</span>
-                    <a href="#" class="btn btn-default fileupload-exists" data-dismiss="fileupload">'.trans('admin::files.remove').'</a>
-            </div>
-        </div>';
+        $html .= '<a href="#" class="btn btn-default fileinput-exists" data-dismiss="fileinput">'.trans('admin::files.remove').'</a></div></div>';
 
         /*
           Set checkbox name to the actual attribute name, even if its in a related model.
