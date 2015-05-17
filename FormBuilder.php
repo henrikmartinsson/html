@@ -239,7 +239,7 @@ class FormBuilder extends BaseFormBuilder {
             $thumbnail = $this->html->link($attachment->url());
         }
 
-        $html .= $this->file($name, $options);
+        $html = $this->file($name, $options);
 
         /*
           Set checkbox name to the actual attribute name, even if its in a related model.
