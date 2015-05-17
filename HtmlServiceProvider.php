@@ -5,6 +5,16 @@ use Illuminate\Html\HtmlServiceProvider as BaseHtmlServiceProvider;
 class HtmlServiceProvider extends BaseHtmlServiceProvider { 
 
     /**
+     * Add Translations
+     * 
+     * @return void
+     */
+    public function boot()
+    {
+        $this->loadTranslationsFrom(__DIR__.'/lang', 'html');
+    }
+
+    /**
      * Update alias to use the new form builder.
      *
      * @return void

@@ -250,7 +250,7 @@ class FormBuilder extends BaseFormBuilder {
         
         $remove = 
             '<div class="checkbox block">
-                <label>'.$this->checkbox('delete_'.$cbName).trans('admin::files.remove').'</label>
+                <label>'.$this->checkbox('delete_'.$cbName).trans('html::files.remove').'</label>
             </div>';
 
         return (is_null($thumbnail)) ? $html : $thumbnail.$remove.$html;
