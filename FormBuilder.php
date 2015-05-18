@@ -269,6 +269,8 @@ class FormBuilder extends BaseFormBuilder {
     {
         $attachment = $this->model;
 
+        if (! $attachment) return null;
+
         // Find attachment
         foreach (explode('.', $key) as $segment)
         {
